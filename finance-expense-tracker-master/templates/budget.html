@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+    <div class="bg-white shadow rounded-lg p-6">
+        <div class="flex items-center justify-between mb-6">
+            <h1 class="text-2xl font-bold text-gray-900">
+                <i class="fas fa-piggy-bank text-indigo-600 mr-2"></i>Set Your Budget
+            </h1>
+        </div>
+
+        <form action="{{ url_for('budget') }}" method="POST" class="space-y-6">
+            <!-- Budget Amount Input -->
+            <div>
+                <label for="amount" class="block text-sm font-medium text-gray-700">Budget Amount ($)</label>
+                <div class="mt-1 relative rounded-md shadow-sm">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <span class="text-gray-500 sm:text-sm">$</span>
+                    </div>
+                    <input type="number" name="amount" id="amount" required step="0.01" min="0.01"
+                           class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md"
+                           placeholder="0.00" value="{{ budget.amount if budget else '' }}">
+                </div>
+            </div>
+
+            <!-- Budget Period Selection -->
+            <div>
+                <label for="period" class="block text-sm font-medium text-gray-700">Budget Period</label>
+                <select id="period" name="period" required
+                        class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                    <option value="monthly" {% if budget and budget.period == 'monthly' %}selected{% endif %}>Monthly</option>
+                    <option value="annual" {% if budget and budget.period == 'annual' %}selected{% endif %}>Annual</option>
+                </select>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="flex justify-end space-x-3">
+                <a href="{{ url_for('dashboard') }}"
+                   class="inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Cancel
+                </a>
+                <button type="submit"
+                        class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    <i class="fas fa-save mr-2"></i>Save Budget
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

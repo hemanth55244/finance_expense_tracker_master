@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+    <div class="bg-white shadow rounded-lg p-6">
+        <div class="flex items-center justify-between mb-6">
+            <h1 class="text-2xl font-bold text-gray-900">
+                <i class="fas fa-minus-circle text-red-500 mr-2"></i>Add New Expense
+            </h1>
+        </div>
+
+        <form action="{{ url_for('add_expense_route') }}" method="POST" class="space-y-6">
+            <!-- Amount Input -->
+            <div>
+                <label for="amount" class="block text-sm font-medium text-gray-700">Amount ($)</label>
+                <div class="mt-1 relative rounded-md shadow-sm">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <span class="text-gray-500 sm:text-sm">$</span>
+                    </div>
+                    <input type="number" name="amount" id="amount" required step="0.01" min="0.01"
+                           class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md"
+                           placeholder="0.00">
+                </div>
+            </div>
+
+            <!-- Category Selection -->
+            <div>
+                <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
+                <select id="category" name="category" required
+                        class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                    <option value="">Select a category</option>
+                    <option value="Food">Food & Dining</option>
+                    <option value="Transportation">Transportation</option>
+                    <option value="Housing">Housing & Utilities</option>
+                    <option value="Healthcare">Healthcare</option>
+                    <option value="Entertainment">Entertainment</option>
+                    <option value="Shopping">Shopping</option>
+                    <option value="Education">Education</option>
+                    <option value="Travel">Travel</option>
+                    <option value="Insurance">Insurance</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+
+            <!-- Description Input -->
+            <div>
+                <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+                <div class="mt-1">
+                    <textarea id="description" name="description" rows="3" required
+                              class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                              placeholder="Enter expense description"></textarea>
+                </div>
+            </div>
+
+            <!-- Date Input -->
+            <div>
+                <label for="date" class="block text-sm font-medium text-gray-700">Date</label>
+                <div class="mt-1">
+                    <input type="date" name="date" id="date" required
+                           class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="flex justify-end space-x-3">
+                <a href="{{ url_for('dashboard') }}"
+                   class="inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Cancel
+                </a>
+                <button type="submit"
+                        class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    <i class="fas fa-save mr-2"></i>Save Expense
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Quick Tips -->
+    <div class="mt-6 bg-blue-50 rounded-lg p-4">
+        <h3 class="text-lg font-medium text-blue-900 mb-2">
+            <i class="fas fa-lightbulb text-blue-500 mr-2"></i>Quick Tips
+        </h3>
+        <ul class="list-disc list-inside text-sm text-blue-800 space-y-1">
+            <li>Be specific in your descriptions to track expenses better</li>
+            <li>Categorize correctly to get accurate spending insights</li>
+            <li>Check your budget before making large expenses</li>
+            <li>Keep all receipts for important purchases</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+    // Set default date to today
+    document.getElementById('date').valueAsDate = new Date();
+
+    // Form validation
+    document.querySelector('form').addEventListener('submit', function(e) {
+        const amount = document.getElementById('amount').value;
+        const category = document.getElementById('category').value;
+        const description = document.getElementById('description').value;
+
+        if (amount <= 0) {
+            e.preventDefault();
+            alert('Please enter a valid amount greater than 0');
+        }
+        if (!category) {
+            e.preventDefault();
+            alert('Please select a category');
+        }
+        if (!description.trim()) {
+            e.preventDefault();
+            alert('Please enter a description');
+        }
+    });
+</script>
+{% endblock %}

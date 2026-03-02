@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Finance Tracker</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-indigo-600 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <div class="flex-shrink-0 flex items-center">
+                        <a href="{{ url_for('index') }}" class="text-white text-xl font-bold">
+                            <i class="fas fa-wallet mr-2"></i>Finance Tracker
+                        </a>
+                    </div>
+                </div>
+                
+                {% if 'user_id' in session %}
+                <div class="flex items-center">
+                    <a href="{{ url_for('dashboard') }}" class="text-gray-100 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                        <i class="fas fa-chart-line mr-1"></i>Dashboard
+                    </a>
+                    <a href="{{ url_for('add_expense_route') }}" class="text-gray-100 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                        <i class="fas fa-minus-circle mr-1"></i>Add Expense
+                    </a>
+                    <a href="{{ url_for('add_income_route') }}" class="text-gray-100 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                        <i class="fas fa-plus-circle mr-1"></i>Add Income
+                    </a>
+                    <a href="{{ url_for('reports') }}" class="text-gray-100 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                        <i class="fas fa-file-alt mr-1"></i>Reports
+                    </a>
+                    <a href="{{ url_for('budget') }}" class="text-gray-100 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                        <i class="fas fa-piggy-bank mr-1"></i>Budget
+                    </a>
+                    <a href="{{ url_for('logout') }}" class="text-gray-100 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                        <i class="fas fa-sign-out-alt mr-1"></i>Logout
+                    </a>
+                </div>
+                {% else %}
+                <div class="flex items-center">
+                    <a href="{{ url_for('login') }}" class="text-gray-100 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Login</a>
+                    <a href="{{ url_for('register') }}" class="text-gray-100 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Register</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+                    <div class="rounded-md p-4 {% if category == 'error' %}bg-red-50 text-red-800{% elif category == 'success' %}bg-green-50 text-green-800{% else %}bg-blue-50 text-blue-800{% endif %}">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                {% if category == 'error' %}
+                                    <i class="fas fa-exclamation-circle"></i>
+                                {% elif category == 'success' %}
+                                    <i class="fas fa-check-circle"></i>
+                                {% else %}
+                                    <i class="fas fa-info-circle"></i>
+                                {% endif %}
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm">{{ message }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-4 mt-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <p class="text-center text-sm">© 2023 Personal Finance Tracker. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
